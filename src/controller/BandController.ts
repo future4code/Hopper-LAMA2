@@ -6,17 +6,18 @@ const bandDB = new BandDatabase()
 
 export class BandController {
 
-    async getBandInfos (req: Request, res: Response){
+    async getBandInfos(req: Request, res: Response) {
         try {
 
-            const {id, name} = req.body
+            const { id, name } = req.body
 
             const bandInfos = await bandDB.getBandInfos(id, name)
 
             res.status(200).send({ "bandInfos": bandInfos })
-            
-        }catch (error: any) {
-            throw new CustomError(400, error.message);
-          }
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
+        }
     };
 }

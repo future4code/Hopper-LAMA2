@@ -1,6 +1,8 @@
 import { ShowDatabase } from "../data/ShowDataBase";
 import { CustomError } from "../error/CustomError";
-import { ShowInfoDTO, ShowInputDTO } from "../model/Show";
+import { ParameterMissing } from "../error/ParameterMissing";
+import { ShowTime } from "../error/ShowTime";
+import { ShowInputDTO } from "../model/Show";
 import { IdGenerator } from "../services/IdGenerator";
 
 const idGenerator = new IdGenerator();
@@ -15,15 +17,15 @@ export class ShowBusiness {
         const id = idGenerator.generate();
 
         if (!week_day || !start_time || !end_time || !band_id) {
-            throw new CustomError(412, "Some parameter is missing.")
+            throw new ParameterMissing()
         };
 
-        if (start_time < 08) {
-            throw new CustomError(400, "Hours less than 8am.")
+        if (start_time < 8) {
+            throw new ShowTime()
         };
 
         if (end_time > 23) {
-            throw new CustomError(400, "Time over 11pm.")
+            throw new ShowTime()
         };
 
         if (!Number.isInteger(start_time / end_time)) {
@@ -40,6 +42,6 @@ export class ShowBusiness {
             band_id
         );
 
-        res
+       
     };
 }

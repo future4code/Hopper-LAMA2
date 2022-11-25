@@ -13,7 +13,7 @@ export class UserDatabase extends BaseDatabase {
     email: string,
     password: string,
     role: Role
-      ): Promise<void> {
+  ): Promise<void> {
     try {
       await this.getConnection()
         .insert({
@@ -23,8 +23,10 @@ export class UserDatabase extends BaseDatabase {
           password,
           role
         }).into(UserDatabase.TABLE_NAME);
-    } catch (error:any) {
-      throw new CustomError(400, error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError(400, error.message);
+      }
     }
-  }
+  };
 }

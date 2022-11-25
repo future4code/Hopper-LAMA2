@@ -12,7 +12,7 @@ export class ShowDatabase extends BaseDatabase {
     start_time: number,
     end_time: number,
     band_id: string
-      ): Promise<void> {
+  ): Promise<void> {
     try {
       await this.getConnection()
         .insert({
@@ -22,8 +22,10 @@ export class ShowDatabase extends BaseDatabase {
           end_time,
           band_id
         }).into(ShowDatabase.TABLE_NAME);
-    } catch (error:any) {
-      throw new CustomError(400, error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError(400, error.message);
+      }
     }
-  }
+  };
 }

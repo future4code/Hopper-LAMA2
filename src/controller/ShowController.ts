@@ -25,8 +25,10 @@ export class ShowController {
 
             res.status(200).send("Show created!")
 
-        } catch (error: any) {
-            throw new CustomError(400, error.message);
-          }
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
+        }
     };
 }

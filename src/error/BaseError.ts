@@ -3,7 +3,7 @@ export class BaseError extends Error {
     public code: number,
     public message: string
     ){
-    super();
+    super(message);
   }
 };
 

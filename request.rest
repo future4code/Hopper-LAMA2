@@ -1,0 +1,6 @@
+GET http://localhost:3000/band/details
+Content-Type: application/json
+
+{
+    "id": "123456"
+}

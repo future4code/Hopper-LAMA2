@@ -22,11 +22,12 @@ export class UserController {
             const token = await userBusiness.signup(input);
 
             res.status(200).send({ message: "Usuário criado", token });
-
-        } catch (error: any) {
-            throw new CustomError(400, error.message)
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
         }
-
+    
         await BaseDatabase.destroyConnection();
     }
 
@@ -43,10 +44,11 @@ export class UserController {
 
             // res.status(200).send({ token });
 
-        } catch (error: any) {
-            throw new CustomError(400, error.message)
+        } catch (error) {
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
         }
-        await BaseDatabase.destroyConnection();
-    }
+    };
 
 }

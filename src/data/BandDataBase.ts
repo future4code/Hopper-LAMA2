@@ -20,10 +20,12 @@ export class BandDatabase extends BaseDatabase {
           music_genre,
           responsible
         }).into(BandDatabase.TABLE_NAME);
-    } catch (error: any) {
-      throw new CustomError(400, error.message);
+      } catch (error) {
+        if (error instanceof Error) {
+            throw new CustomError(400, error.message);
+        }
     }
-  };
+};
 
   public async getBandInfos(id: string, name: string): Promise<any> {
     const result = await this.getConnection()
