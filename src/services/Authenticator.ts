@@ -11,10 +11,12 @@ export class Authenticator {
     return token;
   };
 
-  public getData(token: string): AuthenticationData {
-    const payload = jwt.verify(token, process.env.JWT_KEY as string) as AuthenticationData;
-    const result = { id: payload.id }    
-    return result;
+  public getTokenData(token: string): AuthenticationData {
+    const payload = jwt.verify(
+      token, 
+      process.env.JWT_KEY as string
+      ) as AuthenticationData;
+     return { id: payload.id } ;
   }
 };
 

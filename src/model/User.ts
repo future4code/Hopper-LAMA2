@@ -4,7 +4,7 @@ export class User{
     private nome: string,
     private email: string,
     private password: string,
-    private role: Role
+    private role?: Role
     ){}
 
     getId(){
@@ -60,11 +60,11 @@ export interface LoginInputDTO{
     password: string;
 }
 
-export type AuthenticationData = {
-    id: string
-}
-
 export enum Role {
     ADMIN = 'ADMIN',
     NORMAL = 'NORMAL'
+}
+
+export type AuthenticationData = {
+    id: string
 }

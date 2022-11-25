@@ -14,29 +14,13 @@ export class UserBusiness {
 
     async signup(user: UserInputDTO) {
 
-        const {nome, email, password} = user
-
-        if(!nome || !email || !password){
-            throw new CustomError(411, "necessário");
-        };
-
-        // if(nome.length<3) {
-        //     throw new InvalidName();
-        // };
-
-        // if(!email.includes("@")){
-        //     throw new InvalidEmail();
-        // };
-
-        // if(password.length < 6){
-        //     throw new InvalidPassword();
-        // };
-
+        const {nome, email, password, role} = user
+    
         const id = idGenerator.generate();
 
         const hashPassword = await hashManager.hash(password);
 
-        await userDatabase.createUser(id, email, nome, hashPassword);
+        await userDatabase.createUser(id, email, nome, hashPassword, role);
 
         const accessToken = authenticator.generateToken({ id });
 

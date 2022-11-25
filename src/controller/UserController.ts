@@ -10,20 +10,21 @@ export class UserController {
     async signup(req: Request, res: Response) {
         try {
 
-            const { nome, email, password } = req.body
+            const { nome, email, password, role } = req.body
 
             const input: UserInputDTO = {
                 nome,
                 email,
-                password
+                password,
+                role
             }
 
             const token = await userBusiness.signup(input);
 
             res.status(200).send({ message: "Usuário criado", token });
 
-        } catch (error) {
-            res.status(400).send({ error });
+        } catch (error: any) {
+            throw new CustomError(400, error.message)
         }
 
         await BaseDatabase.destroyConnection();
@@ -43,7 +44,7 @@ export class UserController {
             // res.status(200).send({ token });
 
         } catch (error: any) {
-            throw new CustomError(400, error.message);
+            throw new CustomError(400, error.message)
         }
         await BaseDatabase.destroyConnection();
     }
