@@ -5,9 +5,11 @@ import { BandInfoDTO } from "../model/Band";
 const bandDB = new BandDatabase()
 
 export class BandBusiness {
-    async getBandInfos (input: string): Promise<any> {
+    async getBandInfos (input: any): Promise<any> {
 
-        const queryResult: any = await bandDB.getBandInfos(id, name);
+        const {id, name} = input
+         
+        const queryResult: any = await bandDB.getBandInfos(id, name); 
 
         if (!queryResult[0]) {
         throw new CustomError(400, "Band not found")

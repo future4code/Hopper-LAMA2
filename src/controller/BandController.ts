@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { BandDatabase } from "../data/BandDataBase";
+import { CustomError } from "../error/CustomError";
 
 const bandDB = new BandDatabase()
 
@@ -14,9 +15,8 @@ export class BandController {
 
             res.status(200).send({ "bandInfos": bandInfos })
             
-        } catch (error) {
-            
-        }
-    }
-
+        }catch (error: any) {
+            throw new CustomError(400, error.message);
+          }
+    };
 }

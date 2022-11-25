@@ -1,4 +1,4 @@
-export class Band {
+export class Show {
     constructor(
         private id: string,
         private week_day: string,

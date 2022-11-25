@@ -6,7 +6,7 @@ export class ShowDatabase extends BaseDatabase {
 
   private static TABLE_NAME = "LAMA_SHOWS";
 
-  public async createUser(
+  public async createShow(
     id: string,
     week_day: string,
     start_time: number,
