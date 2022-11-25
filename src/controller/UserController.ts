@@ -1,28 +1,33 @@
 import { Request, Response } from "express";
-import { UserInputDTO, LoginInputDTO} from "../model/User";
+import { UserInputDTO, LoginInputDTO } from "../model/User";
 import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
+import { CustomError } from "../error/CustomError";
+
+const userBusiness = new UserBusiness();
 
 export class UserController {
     async signup(req: Request, res: Response) {
         try {
 
+            const { nome, email, password, role } = req.body
+
             const input: UserInputDTO = {
-                email: req.body.email,
-                name: req.body.name,
-                password: req.body.password,
-                role: req.body.role
+                nome,
+                email,
+                password,
+                role
             }
 
-            const userBusiness = new UserBusiness();
-            const token = await userBusiness.createUser(input);
+            const token = await userBusiness.signup(input);
 
-            res.status(200).send({ token });
-
+            res.status(200).send({ message: "Usuário criado", token });
         } catch (error) {
-            res.status(400).send({ error: error.message });
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
         }
-
+    
         await BaseDatabase.destroyConnection();
     }
 
@@ -35,16 +40,15 @@ export class UserController {
                 password: req.body.password
             };
 
-            const userBusiness = new UserBusiness();
-            const token = await userBusiness.getUserByEmail(loginData);
+            // const token = await userBusiness.getUserByEmail(loginData);
 
-            res.status(200).send({ token });
+            // res.status(200).send({ token });
 
         } catch (error) {
-            res.status(400).send({ error: error.message });
+            if (error instanceof Error) {
+                throw new CustomError(400, error.message);
+            }
         }
-
-        await BaseDatabase.destroyConnection();
-    }
+    };
 
 }
