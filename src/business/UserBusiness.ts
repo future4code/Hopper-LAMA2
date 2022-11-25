@@ -1,43 +1,46 @@
-import { UserInputDTO, LoginInputDTO } from "../model/User";
+import { UserInputDTO } from "../model/User";
 import { UserDatabase } from "../data/UserDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
+import { CustomError } from "../error/CustomError";
+
+const idGenerator = new IdGenerator();
+const hashManager = new HashManager();
+const userDatabase = new UserDatabase();
+const authenticator = new Authenticator();
 
 export class UserBusiness {
 
-    async createUser(user: UserInputDTO) {
+    async signup(user: UserInputDTO) {
 
-        const idGenerator = new IdGenerator();
+        const {nome, email, password} = user
+
+        if(!nome || !email || !password){
+            throw new CustomError(411, "necessário");
+        };
+
+        // if(nome.length<3) {
+        //     throw new InvalidName();
+        // };
+
+        // if(!email.includes("@")){
+        //     throw new InvalidEmail();
+        // };
+
+        // if(password.length < 6){
+        //     throw new InvalidPassword();
+        // };
+
         const id = idGenerator.generate();
 
-        const hashManager = new HashManager();
-        const hashPassword = await hashManager.hash(user.password);
+        const hashPassword = await hashManager.hash(password);
 
-        const userDatabase = new UserDatabase();
-        await userDatabase.createUser(id, user.email, user.name, hashPassword, user.role);
+        await userDatabase.createUser(id, email, nome, hashPassword);
 
-        const authenticator = new Authenticator();
-        const accessToken = authenticator.generateToken({ id, role: user.role });
+        const accessToken = authenticator.generateToken({ id });
 
         return accessToken;
     }
 
-    async getUserByEmail(user: LoginInputDTO) {
-
-        const userDatabase = new UserDatabase();
-        const userFromDB = await userDatabase.getUserByEmail(user.email);
-
-        const hashManager = new HashManager();
-        const hashCompare = await hashManager.compare(user.password, userFromDB.getPassword());
-
-        const authenticator = new Authenticator();
-        const accessToken = authenticator.generateToken({ id: userFromDB.getId(), role: userFromDB.getRole() });
-
-        if (!hashCompare) {
-            throw new Error("Invalid Password!");
-        }
-
-        return accessToken;
-    }
 }

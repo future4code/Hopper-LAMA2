@@ -1,28 +1,25 @@
 
 import { CustomError } from "../error/CustomError";
-import { Role } from "../model/User";
 import { BaseDatabase } from "./BaseDatabase";
 
-export class UserDatabase extends BaseDatabase {
+export class BandDatabase extends BaseDatabase {
 
-  private static TABLE_NAME = "LAMA_USUÁRIOS";
+  private static TABLE_NAME = "LAMA_BANDAS";
 
   public async createUser(
     id: string,
-    nome: string,
-    email: string,
-    password: string,
-    role: Role
+    name: string,
+    music_genre: string,
+    responsible: string
       ): Promise<void> {
     try {
       await this.getConnection()
         .insert({
           id,
-          nome,
-          email,
-          password,
-          role
-        }).into(UserDatabase.TABLE_NAME);
+          name,
+          music_genre,
+          responsible
+        }).into(BandDatabase.TABLE_NAME);
     } catch (error:any) {
       throw new CustomError(400, error.message);
     }

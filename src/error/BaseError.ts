@@ -1,6 +1,10 @@
-export abstract class BaseError extends Error {
-    constructor(message: string, public code: number) {
-      super(message);
-    }
+export class BaseError extends Error {
+  constructor(
+    public code: number,
+    public message: string
+    ){
+    super();
   }
-  
+};
+
+
