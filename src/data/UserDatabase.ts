@@ -29,4 +29,20 @@ export class UserDatabase extends BaseDatabase {
       }
     }
   };
+
+  public async findUser(email: string) {
+    try {
+      const result = await this.getConnection()
+        .select("*")
+        .where({ email })
+
+      return result[0];
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError(400, error.message);
+      }
+    }
+
+  }
+
 }

@@ -4,16 +4,17 @@ import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
 import { CustomError } from "../error/CustomError";
 
+
 const userBusiness = new UserBusiness();
 
 export class UserController {
-    async signup(req: Request, res: Response) {
+    async signup(req: Request, res: Response): Promise<void> {
         try {
 
-            const { nome, email, password, role } = req.body
+            const { name, email, password, role } = req.body;
 
             const input: UserInputDTO = {
-                nome,
+                name,
                 email,
                 password,
                 role
@@ -21,13 +22,13 @@ export class UserController {
 
             const token = await userBusiness.signup(input);
 
-            res.status(200).send({ message: "Usuário criado", token });
+            res.status(200).send({ message: "User created", token });
         } catch (error) {
             if (error instanceof Error) {
                 throw new CustomError(400, error.message);
             }
         }
-    
+
         await BaseDatabase.destroyConnection();
     }
 
@@ -35,14 +36,16 @@ export class UserController {
 
         try {
 
-            const loginData: LoginInputDTO = {
-                email: req.body.email,
-                password: req.body.password
+            const { email, password } = req.body;
+
+            const input: LoginInputDTO = {
+                email,
+                password
             };
 
-            // const token = await userBusiness.getUserByEmail(loginData);
+            const token = await userBusiness.login(input)
 
-            // res.status(200).send({ token });
+            res.status(200).send({ token });
 
         } catch (error) {
             if (error instanceof Error) {

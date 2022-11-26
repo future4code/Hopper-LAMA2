@@ -1,7 +1,7 @@
 export class User{
     constructor(
     private id: string,
-    private nome: string,
+    private name: string,
     private email: string,
     private password: string,
     private role?: Role
@@ -12,7 +12,7 @@ export class User{
     }
 
     getName(){
-        return this.nome
+        return this.name
     }
 
     getEmail(){
@@ -32,7 +32,7 @@ export class User{
     }
 
     setName(nome: string){
-        this.nome = nome;
+        this.name = nome;
     }
 
     setEmail(email: string){
@@ -49,7 +49,7 @@ export class User{
 }
 
 export interface UserInputDTO{
-    nome: string
+    name: string
     email: string;
     password: string;
     role: Role
@@ -67,4 +67,5 @@ export enum Role {
 
 export type AuthenticationData = {
     id: string
+    role: string
 }

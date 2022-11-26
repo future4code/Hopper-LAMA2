@@ -4,3 +4,16 @@ Content-Type: application/json
 {
     "id": "123456"
 }
+
+###
+
+
+POST http://localhost:3000/user/signup
+Content-Type: application/json
+
+{
+    "name":"Kurt Cobain",
+    "email":"kurdt@nirvana.com",
+    "password":"gunssucks",
+    "role":"ADMIN",
+}
