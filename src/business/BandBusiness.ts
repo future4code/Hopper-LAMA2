@@ -1,19 +1,17 @@
 import { BandDatabase } from "../data/BandDataBase";
-import { CustomError } from "../error/CustomError";
+import { BandNotFound } from "../error/BandNotFound";
 import { BandInfoDTO } from "../model/Band";
 
 const bandDB = new BandDatabase()
 
 export class BandBusiness {
-    async getBandInfos (input: any): Promise<any> {
+    async getBandInfos (input: string): Promise<any> {
 
-        const {id, name} = input
-         
-        const queryResult: any = await bandDB.getBandInfos(id, name); 
+        const queryResult: any = await bandDB.getBandInfos(input); 
 
         if (!queryResult[0]) {
-        throw new CustomError(400, "Band not found")
-        }
+        throw new BandNotFound()
+        };
   
         const bandInfos: BandInfoDTO = {
             id: queryResult[0].id,

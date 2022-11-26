@@ -4,6 +4,7 @@ import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
 import { CustomError } from "../error/CustomError";
 
+
 const userBusiness = new UserBusiness();
 
 export class UserController {
@@ -26,10 +27,11 @@ export class UserController {
             if (error instanceof Error) {
                 throw new CustomError(400, error.message);
             }
-        }
-    
+        };
+
         await BaseDatabase.destroyConnection();
-    }
+    };
+
 
     async login(req: Request, res: Response) {
 
@@ -48,7 +50,6 @@ export class UserController {
             if (error instanceof Error) {
                 throw new CustomError(400, error.message);
             }
-        }
-    };
-
-}
+        };
+    }
+};

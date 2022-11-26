@@ -3,7 +3,6 @@ import { UserDatabase } from "../data/UserDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { HashManager } from "../services/HashManager";
 import { Authenticator } from "../services/Authenticator";
-import { CustomError } from "../error/CustomError";
 
 const idGenerator = new IdGenerator();
 const hashManager = new HashManager();
@@ -14,8 +13,8 @@ export class UserBusiness {
 
     async signup(user: UserInputDTO) {
 
-        const {nome, email, password, role} = user
-    
+        const {nome, email, password, role} = user;
+
         const id = idGenerator.generate();
 
         const hashPassword = await hashManager.hash(password);

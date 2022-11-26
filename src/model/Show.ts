@@ -62,3 +62,8 @@ export interface ShowInfoDTO {
     end_time: number,
     band_id: string
 };
+
+export interface ShowDetailByDayDTO {
+    band_name: string,
+    music_genre: string
+};

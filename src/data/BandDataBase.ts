@@ -20,19 +20,27 @@ export class BandDatabase extends BaseDatabase {
           music_genre,
           responsible
         }).into(BandDatabase.TABLE_NAME);
-      } catch (error) {
-        if (error instanceof Error) {
-            throw new CustomError(400, error.message);
-        }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError(400, error.message);
+      }
     }
-};
+  };
 
-  public async getBandInfos(id: string, name: string): Promise<any> {
-    const result = await this.getConnection()
-      .select("*")
-      .where({ id })
-      .orWhere({ name })
+  public async getBandInfos(input: string): Promise<any> {
+    try {
+      const result = await this.getConnection()
+        .select("*")
+        .where({ id: input })
+        .orWhere({ name: input })
+        .into(BandDatabase.TABLE_NAME);
 
-    return result
-  }
-};
+      return result
+      
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CustomError(400, error.message);
+      }
+    };
+  };
+}
