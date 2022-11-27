@@ -4,52 +4,53 @@ import { UserBusiness } from "../business/UserBusiness";
 import { BaseDatabase } from "../data/BaseDatabase";
 import { CustomError } from "../error/CustomError";
 
-
-const userBusiness = new UserBusiness();
-
 export class UserController {
-    async signup(req: Request, res: Response) {
+    constructor(private readonly userBusiness: UserBusiness) {}
+
+    public signup = async (req: Request, res: Response) => {
         try {
 
-            const { nome, email, password, role } = req.body
+            const { name, email, password, role } = req.body;
 
             const input: UserInputDTO = {
-                nome,
+                name,
                 email,
                 password,
-                role
+                role,
             }
 
-            const token = await userBusiness.signup(input);
+            const token = await this.userBusiness.createUser(input);
 
-            res.status(200).send({ message: "Usuário criado", token });
+            res.status(200).send({ message: "User created", token });
         } catch (error) {
             if (error instanceof Error) {
                 throw new CustomError(400, error.message);
             }
-        };
+        }
 
         await BaseDatabase.destroyConnection();
-    };
+    }
 
-
-    async login(req: Request, res: Response) {
+    public login = async (req: Request, res: Response) => {
 
         try {
 
-            const loginData: LoginInputDTO = {
-                email: req.body.email,
-                password: req.body.password
+            const { email, password } = req.body;
+
+            const input: LoginInputDTO = {
+                email,
+                password
             };
 
-            // const token = await userBusiness.getUserByEmail(loginData);
+            const token = await this.userBusiness.login(input);
 
-            // res.status(200).send({ token });
+            res.status(200).send({ message: "User Logged!", token });
 
         } catch (error) {
             if (error instanceof Error) {
                 throw new CustomError(400, error.message);
             }
-        };
-    }
-};
+        }
+    };
+
+}

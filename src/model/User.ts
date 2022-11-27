@@ -1,70 +1,30 @@
-export class User{
-    constructor(
-    private id: string,
-    private nome: string,
-    private email: string,
-    private password: string,
-    private role?: Role
-    ){}
-
-    getId(){
-        return this.id;
-    }
-
-    getName(){
-        return this.nome
-    }
-
-    getEmail(){
-        return this.email;
-    }
-
-    getPassword(){
-        return this.password;
-    }
-
-    getRole(){
-        return this.role;
-    }
-
-    setId(id: string){
-        this.id = id;
-    }
-
-    setName(nome: string){
-        this.nome = nome;
-    }
-
-    setEmail(email: string){
-        this.email = email;
-    }
-
-    setPassword(password: string){
-        this.password = password;
-    }
-
-    setRole(role: Role){
-        this.role = role;
-    }
+export enum UserRole {
+    NORMAL = "NORMAL",
+    ADMIN = "ADMIN",
 }
 
-export interface UserInputDTO{
-    nome: string
+export type user = {
+    id: string;
+    name: string;
     email: string;
     password: string;
-    role: Role
+    role: UserRole;
+};
+
+export interface UserInputDTO {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
 }
 
-export interface LoginInputDTO{
+export interface LoginInputDTO {
     email: string;
     password: string;
 }
 
-export enum Role {
-    ADMIN = 'ADMIN',
-    NORMAL = 'NORMAL'
+export interface AuthenticationData {
+    id: string;
+    role: UserRole;
 }
 
-export type AuthenticationData = {
-    id: string
-}
