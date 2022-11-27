@@ -28,6 +28,6 @@ INSERT INTO `LAMA_BANDAS` (id, name, music_genre, responsible)
 VALUES ("123456", "Foo Fighters", "Rock", "Dave Grohl"),
 ("789123", "Pearl Jam", "Rock", "Eddie Vedder");
 
-  SELECT name, music_genre FROM `LAMA_SHOWS`as `shows`
-      JOIN `LAMA_BANDAS` as `bandas` ON band_id = '789123';
+  SELECT band_id, name, music_genre FROM `LAMA_SHOWS`AS s
+      JOIN `LAMA_BANDAS` AS b ON b.id = s.band_id WHERE s.band_id = '789123';
      
