@@ -12,9 +12,9 @@ POST http://localhost:3000/show/create
 Content-Type: application/json
 
 {
-    "week_day": "sabado",
-    "start_time": 8,
-    "end_time": 9,
+    "week_day": "sexta",
+    "start_time": 11,
+    "end_time": 12,
     "band_id": "789123"
 }
 

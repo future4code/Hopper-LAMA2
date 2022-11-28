@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ShowBusiness } from "../business/ShowBusiness";
 import { CustomError } from "../error/CustomError";
+import { DuplicateEnter } from "../error/DuplicateEnter";
 import { ShowInputDTO } from "../model/Show";
 
 const showBusiness = new ShowBusiness();
@@ -19,7 +20,13 @@ export class ShowController {
                 band_id
             };
 
-            await showBusiness.createShow(input)
+            const validate = await showBusiness.validateData(input)
+     
+            if (validate === 0) {
+                await showBusiness.createShow(input)
+            } else {
+                throw new DuplicateEnter()
+            };
 
             res.status(200).send("Show created!")
 
@@ -30,15 +37,14 @@ export class ShowController {
         };
     };
 
-    async getShowByData(req: Request, res: Response): Promise<void> {
+    async getShowByData(req: Request, res: Response): Promise<any> {
         try {
 
-            const { week_day } = req.body
+            const week_day = req.body.week_day
 
             const showInfos = await showBusiness.getShowByData(week_day)
-            console.log("dia da semana no controller", week_day)
-            console.log("Show infos no controller", showInfos)
-            res.status(200).send({"Show infos": showInfos})
+
+            res.status(200).send({ "Show infos": showInfos })
 
         } catch (error) {
             if (error instanceof Error) {
