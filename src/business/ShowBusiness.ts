@@ -51,8 +51,6 @@ export class ShowBusiness {
 
         const { week_day, start_time, end_time } = input
 
-        console.log("input no bs", input)
-
         const validate: any = {
             week_day,
             start_time,
@@ -61,7 +59,6 @@ export class ShowBusiness {
 
         const validateData = await showDB.validateData(validate)
 
-        console.log('validateData no business', validateData)
         return validateData
 
     };
@@ -69,20 +66,28 @@ export class ShowBusiness {
     async getShowByData(input: any) {
 
         const queryResult: any = await showDB.getShowByData(input);
-        console.log("queryResult no business", queryResult[0])
 
-        const idBanda: string[] = [queryResult[0].band_id];
+        const idBandas: string = queryResult[0].map((u: any) => u.band_id);
 
-        const bandQueryResult: any = await showDB.getBandInfos(idBanda);
+        let bandQueryResult: any;
+        let bandResultInfos: any = [];
+
+        for (let i = 0; i <= idBandas.length -1; i++) {
+            
+            bandQueryResult = await showDB.getBandInfos(idBandas[i])
+            console.log("info da banda", bandQueryResult)
+            bandResultInfos.push(bandQueryResult)
+    
+            console.log("bandas vetor", bandResultInfos)
+        };     
+        
+        console.log("result info", bandResultInfos)
 
         if (!queryResult[0]) {
             throw new ShowNotFound()
         };
-        console.log('bandQueryResult no business', bandQueryResult[0].map((u: any) => u.name));
-
-        const showInfos: string = bandQueryResult[0].map((u: any) => { return [u.name, u.music_genre] });
-
-        console.log('info show no business', showInfos)
+     
+        const showInfos: string = bandResultInfos.flat(1)
 
         return showInfos
     };

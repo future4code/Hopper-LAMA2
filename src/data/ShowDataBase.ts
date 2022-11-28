@@ -29,14 +29,15 @@ export class ShowDatabase extends BaseDatabase {
     };
   };
 
-  public async getShowByData(input: string) {
+  public async getShowByData(input: any) {
+    console.log('input no db', input)
     try {
-      const result = await this.getConnection()
-        .select("*")
-        .where({ week_day: input })
-        // .orderBy("start_time", "asc")
-        .into(ShowDatabase.TABLE_NAME);
-
+   
+      const result = await this.getConnection().raw(`
+      SELECT * FROM ${ShowDatabase.TABLE_NAME} WHERE week_day = '${input}'
+      ORDER BY start_time ASC
+      `)
+        
       return result
 
     } catch (error) {
@@ -49,12 +50,11 @@ export class ShowDatabase extends BaseDatabase {
   public async getBandInfos(input: any) {
     try {
       const banda = await this.getConnection().raw(`
-      SELECT band_id, name, music_genre FROM ${ShowDatabase.TABLE_NAME} AS shows
-      JOIN ${`LAMA_BANDAS`} AS bandas ON bandas.id = shows.band_id
-      WHERE shows.band_id = ${input}
+      SELECT name, music_genre FROM ${'LAMA_BANDAS'}
+      WHERE id = ${input}
       `)
-
-      return banda
+   
+      return banda[0]
 
     } catch (error) {
       if (error instanceof Error) {
@@ -65,8 +65,6 @@ export class ShowDatabase extends BaseDatabase {
 
   public async validateData(input: any) {
     try {
-
-      console.log("input no db", input)
       const font = await this.getConnection()
         .select("*")
         .where({

@@ -21,8 +21,7 @@ export class ShowController {
             };
 
             const validate = await showBusiness.validateData(input)
-            console.log("validate no controller", validate)
-
+     
             if (validate === 0) {
                 await showBusiness.createShow(input)
             } else {
@@ -41,7 +40,7 @@ export class ShowController {
     async getShowByData(req: Request, res: Response): Promise<any> {
         try {
 
-            const { week_day } = req.body
+            const week_day = req.body.week_day
 
             const showInfos = await showBusiness.getShowByData(week_day)
 

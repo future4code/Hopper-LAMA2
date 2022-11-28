@@ -24,5 +24,5 @@ GET http://localhost:3000/show/details
 Content-Type: application/json
 
 {
-    "week_day": "sexta"
+    "week_day": "sabado"
 }
