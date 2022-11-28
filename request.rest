@@ -26,3 +26,26 @@ Content-Type: application/json
 {
     "week_day": "sabado"
 }
+
+
+####
+
+POST http://localhost:3000/user/signup/
+Content-Type: application/json
+
+{
+    "name": "Kurt Cobain",
+    "email": "kurt@nirvana.com",
+    "password": "axlsucks",
+    "role": "ADMIN"
+}
+
+###
+
+GET http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "email": "kurt@nirvana.com",
+    "password": "axlsucks"
+}
